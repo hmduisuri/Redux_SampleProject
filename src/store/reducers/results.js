@@ -1,4 +1,5 @@
-import * as actionType from '../actions';
+import * as actionType from '../actions/actionTypes';
+import { updatedObject } from '../utility';
 
 // initialState is like a state 
 const initialState = {
@@ -7,29 +8,21 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 
-    switch(action.type) {
-        case actionType.STOREVALUE:
-            return {
-                ...state,
-                // save the latest counter result -- 'concat' only update the result. 'push' : update the counter property
-                //result is a array 
-                results: state.results.concat({id: Math.random(), value: action.storeValue})             
-            }
-        case actionType.DELETEVALUE:
-            // const id =2;
-            // const newArray = [...state.results]
-            // newArray.results.splice(id,1);
-            //or else
-            //filtering and getting the meetable value only and filter returnd the new array always
+    const deleteResult = (state, action) => {
+            // const id =2; // const newArray = [...state.results] // newArray.results.splice(id,1); 
+            //or else //filtering and getting the meetable value only and filter returnd the new array always
             const updatedArray = state.results.filter(result => result.id !== action.lstElementId);
+            //copy the old state // results: newArray
+            return updatedObject(state, {results: updatedArray})
+    }
 
-            return {
-                ...state, //copy the old state
-                results: updatedArray
-                // results: newArray
-            }
-        }
-    return state;
+    switch(action.type) {
+        // save the latest counter result -- 'concat' only update the result. 'push' : update the counter property
+        //result is a array     
+        case actionType.STOREVALUE: return updatedObject(state, {results: state.results.concat({id: Math.random(), value: action.storeValue})});
+        case actionType.DELETEVALUE: return deleteResult(state,action);
+        default: return state;
+    }
    
 }
 
