@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CounterControl from '../../components/CounterControl/CounterControl';
 import CounterOutput from '../../components/CounterOutput/CounterOutput';
 
-import * as actionType from '../../store/actions';
+import * as actionCreators from '../../store/actions/index';
 class Counter extends Component {
     state = {
         counter: 0
@@ -33,7 +33,7 @@ class Counter extends Component {
                 <CounterOutput value={this.props.ctr} />
                 <CounterControl label="Increment" clicked={this.props.onIncrementCounter} />
                 <CounterControl label="Decrement" clicked={this.props.onDecrementCounter}  />
-                <CounterControl label="Add 5" clicked={this.props.onAddNumCounter}  />
+                <CounterControl label="Add 10" clicked={this.props.onAddNumCounter}  />
                 <CounterControl label="Subtract 5" clicked={this.props.onSubsNumCounter}  />
 
                 <hr />
@@ -59,12 +59,13 @@ const mapStateToProp = state => {
 const mapDispatchToProps = dispatch => {
     return {
         //'onIncrementCounter' is behave as a funtion and whe we calling 'onIncrementCounter', it execute 'dispatch()' 
-        onIncrementCounter: () => dispatch({type: actionType.INCREMENT}),
-        onDecrementCounter: () => dispatch({type: actionType.DECREMENT}),
-        onAddNumCounter: () => dispatch({type: actionType.ADDVALUE, value: 5}),
-        onSubsNumCounter: () => dispatch({type: actionType.SUBSVALUE, value: 5}),
-        onStoreValue: (paramCounter) => dispatch({type: actionType.STOREVALUE, storeValue : paramCounter}),
-        onDeleteValue: (paramId) => dispatch({type: actionType.DELETEVALUE, lstElementId: paramId})
+        // onIncrementCounter: () => dispatch({type: actionType.INCREMENT}),
+        onIncrementCounter: () => dispatch(actionCreators.increment()),
+        onDecrementCounter: () => dispatch(actionCreators.decrement()),
+        onAddNumCounter: () => dispatch(actionCreators.add(10)),
+        onSubsNumCounter: () => dispatch(actionCreators.substract(5)),
+        onStoreValue: (paramCounter) => dispatch(actionCreators.storeResult(paramCounter)),
+        onDeleteValue: (paramId) => dispatch(actionCreators.deleteResult(paramId))
         //and now we have to impement this 'INCREMENT' in the reducer.js file
     };
 }
